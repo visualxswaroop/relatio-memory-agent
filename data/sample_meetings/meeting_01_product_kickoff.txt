@@ -1,0 +1,63 @@
+Priya: Okay team, let's kick off Q4 planning. We have a lot on our plate this quarter.
+
+Rahul: Haan, so the big thing is the dashboard migration. We need to move from the old Angular dashboard to React. I think we can finish this by end of September.
+
+Priya: September end? That's tight. Rahul, you'll own the dashboard migration, right?
+
+Rahul: Yes, I'll handle it. September 30 deadline works for me.
+
+Ananya: I wanted to bring up the mobile app redesign. We've been getting a lot of complaints about the onboarding flow. 
+
+Priya: Good point. Ananya, can you take that? Let's target mid-October for the first prototype.
+
+Ananya: Sure, I'll own the mobile onboarding redesign. October 15 for the prototype.
+
+Vikram: What about the API rate limiting? We had 3 outages last month because of that.
+
+Priya: Haan, that's critical. Vikram, please implement rate limiting on the payment endpoints by September 15.
+
+Vikram: Done. I'll also set up monitoring dashboards for it.
+
+Priya: Perfect. Vikram, you'll also handle the monitoring setup then.
+
+Deepak: I've been looking into the recommendation engine. We should explore ML-based recommendations for the marketplace.
+
+Priya: Interesting idea. Let's explore that. Who wants to own it?
+
+[silence]
+
+Priya: Okay, we'll come back to that. Also, we need to update the API documentation. It's really outdated.
+
+Rahul: Haan, someone should definitely do that.
+
+Priya: Let's discuss that next time. Moving on — we need to set up the staging environment for Q4 testing.
+
+Vikram: I can help with that but I'm already stretched with the rate limiting work.
+
+Priya: Let's see, dekhte hain who can take it.
+
+Ananya: One more thing — the customer feedback portal. We promised it in Q3 but never delivered. 
+
+Priya: Right. That's still open. We need to address that.
+
+Priya: Also, the architecture discussion — I think we should move to microservices. The monolith is getting too complex. Let's make that our Q4 direction.
+
+Rahul: Makes sense. Microservices it is.
+
+Priya: Decision made. Microservices architecture for new services starting Q4.
+
+Deepak: For the data pipeline, I'll set up the ETL jobs for the new analytics module. Target is October 5.
+
+Priya: Great. Deepak, the ETL pipeline setup is yours by October 5.
+
+Priya: Rahul, can you also handle the CI/CD pipeline upgrade? We need to move to GitHub Actions.
+
+Rahul: Sure, I'll look into it. Maybe by end of October.
+
+Priya: Okay. Let's also plan the Q4 all-hands presentation. The date is October 20.
+
+Priya: And the security audit is coming up on September 25. Everyone needs to be prepared.
+
+Vikram: I'll prepare the security documentation for the audit.
+
+Priya: Thanks. Let's wrap up. We have a lot to do this quarter.

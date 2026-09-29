@@ -1,0 +1,222 @@
+{
+  "total_tasks": 15,
+  "tasks": [
+    {
+      "key": "dashboard_migration",
+      "description": "Migrate Angular dashboard to React",
+      "owner": "Rahul",
+      "deadline_original": "2024-09-30",
+      "deadline_drifts": [
+        "2024-10-15",
+        "2024-10-31"
+      ],
+      "meetings": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "key": "mobile_onboarding_redesign",
+      "description": "Redesign mobile app onboarding flow",
+      "owner": "Ananya",
+      "deadline": "2024-10-15",
+      "meetings": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "key": "api_rate_limiting",
+      "description": "Implement rate limiting on payment endpoints",
+      "owner": "Vikram",
+      "deadline": "2024-09-15",
+      "status_final": "done",
+      "meetings": [
+        1,
+        2
+      ]
+    },
+    {
+      "key": "monitoring_dashboards",
+      "description": "Set up monitoring dashboards for rate limiting",
+      "owner": "Vikram",
+      "meetings": [
+        1,
+        2
+      ]
+    },
+    {
+      "key": "etl_pipeline_setup",
+      "description": "Set up ETL jobs for analytics module",
+      "owner": "Deepak",
+      "deadline": "2024-10-05",
+      "status_final": "done",
+      "meetings": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "key": "cicd_pipeline_upgrade",
+      "description": "Upgrade CI/CD to GitHub Actions",
+      "owner": "Rahul",
+      "meetings": [
+        1,
+        2,
+        4
+      ],
+      "note": "never started"
+    },
+    {
+      "key": "security_documentation",
+      "description": "Prepare security docs for audit",
+      "owner": "Vikram",
+      "status_final": "done",
+      "meetings": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "key": "mobile_user_testing",
+      "description": "Conduct user testing for mobile onboarding",
+      "owner": "Ananya",
+      "meetings": [
+        3,
+        4
+      ]
+    },
+    {
+      "key": "vulnerability_fixes",
+      "description": "Fix security vulnerabilities found in audit",
+      "owner": "Vikram",
+      "meetings": [
+        3,
+        4
+      ]
+    },
+    {
+      "key": "recommendation_engine_feasibility",
+      "description": "Feasibility study for ML recommendations",
+      "owner": "Deepak",
+      "meetings": [
+        3,
+        4
+      ]
+    },
+    {
+      "key": "recommendation_engine_implementation",
+      "description": "Build recommendation engine MVP",
+      "owner": "Deepak",
+      "deadline": "2024-11-15",
+      "meetings": [
+        4
+      ]
+    },
+    {
+      "key": "staging_environment_setup",
+      "description": "Complete staging environment for Q4",
+      "owner": "Vikram",
+      "deadline": "2024-10-28",
+      "meetings": [
+        1,
+        2,
+        3,
+        4
+      ]
+    }
+  ],
+  "silent_tasks": [
+    {
+      "key": "recommendation_engine_exploration",
+      "description": "Explore ML-based recommendations (initially unassigned)",
+      "meetings": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "key": "api_documentation_update",
+      "description": "Update outdated API documentation",
+      "meetings": [
+        1,
+        3,
+        4
+      ]
+    },
+    {
+      "key": "cicd_pipeline_reassign",
+      "description": "CI/CD pipeline needs new owner after Rahul couldn't do it",
+      "meetings": [
+        4
+      ]
+    }
+  ],
+  "total_silent_tasks": 3,
+  "deadline_drifts": [
+    {
+      "task": "dashboard_migration",
+      "changes": [
+        "2024-09-30 \u2192 2024-10-15",
+        "2024-10-15 \u2192 2024-10-31"
+      ],
+      "count": 2
+    }
+  ],
+  "decision_reversed": {
+    "original": "Microservices architecture for new services (Meeting 1)",
+    "reversed": "Modular monolith instead of microservices (Meeting 3)",
+    "reason": "CTO concern about operational complexity"
+  },
+  "stuck_topics": [
+    {
+      "text": "Customer feedback portal \u2014 discussed in 4 meetings, never assigned",
+      "meetings": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "text": "API documentation update \u2014 discussed in 3 meetings, never assigned",
+      "meetings": [
+        1,
+        3,
+        4
+      ]
+    }
+  ],
+  "important_dates": [
+    {
+      "title": "Security Audit",
+      "date": "2024-09-25"
+    },
+    {
+      "title": "Q4 All-Hands Presentation",
+      "date": "2024-10-20"
+    },
+    {
+      "title": "Board Presentation",
+      "date": "2024-11-10"
+    },
+    {
+      "title": "Quarterly Highlights Due",
+      "date": "2024-11-05"
+    }
+  ],
+  "participants": [
+    "Priya",
+    "Rahul",
+    "Ananya",
+    "Vikram",
+    "Deepak"
+  ]
+}

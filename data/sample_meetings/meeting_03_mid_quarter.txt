@@ -1,0 +1,55 @@
+Priya: Mid-quarter check. Let's go through everything. Rahul, dashboard?
+
+Rahul: So... I need more time. The data migration is more complex than we thought. I'm now looking at end of October, maybe November 1.
+
+Priya: November 1? That's a full month late from the original September 30 deadline. This is concerning.
+
+Rahul: I know, I know. But the legacy system has so many edge cases. I'm making progress though.
+
+Priya: Let's set the deadline to October 31 and see. No more slips please.
+
+Ananya: Mobile onboarding prototype is ready. I demoed it to the design team and they approved it. Now I need to do user testing.
+
+Priya: Awesome. Ananya, start the user testing phase. Let's target October 25 for the testing results.
+
+Ananya: Got it.
+
+Deepak: ETL pipeline is done. Deployed and running in production.
+
+Priya: Great work Deepak. Mark it done.
+
+Priya: Now, about the architecture decision — I've been rethinking. After talking with the CTO, microservices might be overkill for our current scale. Let's actually stick with the monolith but modularize it better. We're reversing the microservices decision.
+
+Rahul: Wait, we already started planning some services with microservices in mind.
+
+Priya: I understand, but the CTO made a good point about operational complexity. Decision changed — modular monolith, not microservices.
+
+Vikram: What about the API documentation? That's been open since the first meeting.
+
+Priya: Haan, someone should really take that up. It's important.
+
+[silence]
+
+Priya: Okay, adding it to the list again. 
+
+Priya: The recommendation engine — still no owner?
+
+Deepak: I can look into it now that ETL is done. But I'll need to do some research first. Dekhte hain.
+
+Priya: Deepak, let's say you'll do a feasibility study by October 20?
+
+Deepak: I'll try. Let me see.
+
+Priya: Customer feedback portal — this has been open for three meetings now. We need to address this.
+
+Ananya: I can take it after the mobile testing is done. Maybe mid-November?
+
+Priya: Let's not commit right now. It's still open.
+
+Priya: Security audit went well, by the way. Vikram, great job on the documentation.
+
+Vikram: Thanks. I also found some vulnerabilities that we should fix. I'll create tickets for those.
+
+Priya: Please do. Create the vulnerability fix tickets.
+
+Priya: Q4 all-hands reminder — October 20. Rahul, dashboard demo is expected.

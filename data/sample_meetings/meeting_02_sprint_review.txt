@@ -1,0 +1,53 @@
+Priya: Okay, two weeks in. Let's review progress. Rahul, dashboard migration?
+
+Rahul: So, the migration is going slower than expected. I've hit some issues with the legacy data layer. I think we need to push the deadline to October 15.
+
+Priya: October 15? That's two weeks late. Is there anything blocking you?
+
+Rahul: Mainly the legacy API compatibility. I need to refactor the data models first.
+
+Priya: Okay, let's update the deadline to October 15. Rahul, please make sure you flag issues earlier next time.
+
+Ananya: Mobile onboarding redesign is on track. I've completed the wireframes and started the implementation.
+
+Priya: Great, Ananya. Keep it up.
+
+Vikram: Rate limiting is done. Deployed to staging yesterday. Monitoring dashboards are also set up.
+
+Priya: Excellent. Vikram, mark those as done.
+
+Deepak: ETL pipeline is in progress. I should be done by October 3, slightly ahead of schedule.
+
+Priya: Nice. What about the recommendation engine idea from last time?
+
+[silence]
+
+Priya: Nobody took that? It was discussed but nobody owns it. Let's make sure we assign it soon.
+
+Rahul: CI/CD pipeline upgrade — I haven't started yet. Dashboard migration is taking priority.
+
+Priya: Okay. Let's keep CI/CD for later in the quarter.
+
+Priya: The staging environment — did anyone set it up?
+
+Vikram: I did a basic setup but it's not fully configured yet.
+
+Priya: Okay, who's going to finish the staging environment setup? 
+
+[silence]
+
+Priya: Dekhte hain, we'll figure it out.
+
+Ananya: The customer feedback portal — any updates?
+
+Priya: Still open. We haven't assigned it yet.
+
+Priya: One more thing — the security audit is next week, September 25. Everyone ready?
+
+Vikram: Security docs are prepared. We should be fine.
+
+Priya: Good. Remember, Q4 all-hands is October 20. Rahul, can you prepare a demo of the new dashboard?
+
+Rahul: If the migration is going well by then, sure. October 20, noted.
+
+Priya: Alright, let's wrap up. Key concern is the dashboard deadline slip.

@@ -1,0 +1,22 @@
+[
+  {
+    "filename": "meeting_01_product_kickoff.txt",
+    "title": "Q4 Product Kickoff",
+    "date": "2024-09-02"
+  },
+  {
+    "filename": "meeting_02_sprint_review.txt",
+    "title": "Sprint 1 Review",
+    "date": "2024-09-16"
+  },
+  {
+    "filename": "meeting_03_mid_quarter.txt",
+    "title": "Mid-Quarter Check-in",
+    "date": "2024-10-07"
+  },
+  {
+    "filename": "meeting_04_final_review.txt",
+    "title": "Q4 Final Sprint Planning",
+    "date": "2024-10-21"
+  }
+]

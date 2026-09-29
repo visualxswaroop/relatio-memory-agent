@@ -1,0 +1,2868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RELATIO — Relationship Intelligence for Better Meetings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4338ca;
+      --primary-light: #4f46e5;
+      --primary-accent: #6366f1;
+      --primary-subtle: #eef2ff;
+      --secondary: #0ea5e9;
+      --success: #059669;
+      --success-light: #ecfdf5;
+      --warning: #d97706;
+      --warning-light: #fffbeb;
+      --danger: #dc2626;
+      --danger-light: #fef2f2;
+      --info: #0284c7;
+      --info-light: #f0f9ff;
+      --surface-canvas: #f1f4fa;
+      --surface-card: #ffffff;
+      --surface-sidebar: #ffffff;
+      --surface-subtle: #f8fafc;
+      --border: #e2e8f0;
+      --border-subtle: #f1f5f9;
+      --text: #0f172a;
+      --text-secondary: #475569;
+      --text-muted: #94a3b8;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+      --radius-xl: 24px;
+      --radius-pill: 9999px;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 16px -2px rgba(15, 23, 42, 0.06);
+      --shadow-lg: 0 12px 32px -4px rgba(15, 23, 42, 0.08);
+      --shadow-indigo: 0 8px 24px -4px rgba(79, 70, 229, 0.25);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--surface-canvas);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 16px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Outer Wrapper matching reference frame */
+    .app-frame {
+      width: 100%;
+      max-width: 1440px;
+      background: var(--surface-card);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 20px 48px rgba(30, 41, 59, 0.08), 0 1px 3px rgba(0,0,0,0.02);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      display: grid;
+      grid-template-columns: 240px 1fr 300px;
+      min-height: calc(100vh - 32px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Common SVG Icon sizing */
+    .icon {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2;
+      stroke: currentColor;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: middle;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .icon-sm { width: 14px; height: 14px; }
+    .icon-lg { width: 22px; height: 22px; }
+
+    /* Consent Banner */
+    .consent-banner {
+      grid-column: 1 / -1;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--border);
+      padding: 8px 24px;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .consent-banner-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* LEFT SIDEBAR */
+    .sidebar-left {
+      background: #ffffff;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 16px;
+      gap: 24px;
+      height: 100%;
+    }
+
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 8px;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-logo-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+      flex-shrink: 0;
+    }
+    .brand-text-block {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+      line-height: 1.1;
+    }
+    .brand-tagline {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--primary);
+      margin-top: 2px;
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+    .nav-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      padding: 12px 12px 4px 12px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      transition: all 0.15s ease;
+    }
+    .nav-item:hover {
+      background: #f8fafc;
+      color: var(--text);
+    }
+    .nav-item.active {
+      background: var(--primary-subtle);
+      color: var(--primary);
+      font-weight: 700;
+    }
+    .nav-item.active .icon {
+      stroke: var(--primary);
+    }
+    .nav-badge {
+      margin-left: auto;
+      background: #e2e8f0;
+      color: #475569;
+      font-size: 0.7rem;
+      padding: 2px 7px;
+      border-radius: var(--radius-pill);
+      font-weight: 700;
+    }
+    .nav-item.active .nav-badge {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* Status indicator in sidebar footer */
+    .sidebar-footer {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .status-card {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      font-size: 0.75rem;
+    }
+    .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      display: inline-block;
+      box-shadow: 0 0 0 2px rgba(5, 150, 105, 0.2);
+    }
+
+    /* CENTER MAIN WORKSPACE */
+    .workspace {
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      max-height: 100%;
+      background: #fafcff;
+      border-right: 1px solid var(--border);
+    }
+
+    /* Top Navigation / Action Bar */
+    .workspace-header {
+      padding: 20px 28px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .search-bar-wrapper {
+      position: relative;
+      flex: 1;
+      max-width: 480px;
+    }
+    .search-input {
+      width: 100%;
+      height: 42px;
+      padding: 8px 16px 8px 40px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      font-size: 0.88rem;
+      font-family: inherit;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary-accent);
+      background: #ffffff;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+    }
+    .search-icon-pos {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Center Content Container */
+    .workspace-content {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* HERO BANNER - Exact match with reference blue card */
+    .hero-banner {
+      background: linear-gradient(135deg, #4338ca 0%, #3b82f6 100%);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 24px -4px rgba(67, 56, 202, 0.25);
+    }
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: -40px;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%);
+      pointer-events: none;
+    }
+    .hero-content {
+      max-width: 540px;
+      z-index: 1;
+    }
+    .hero-greeting {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    .hero-desc {
+      font-size: 0.88rem;
+      opacity: 0.92;
+      line-height: 1.45;
+      margin-bottom: 18px;
+    }
+    .hero-btn {
+      background: #ffffff;
+      color: var(--primary);
+      border: none;
+      padding: 9px 20px;
+      border-radius: var(--radius-pill);
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .hero-btn:hover {
+      background: #f8fafc;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+    .hero-badge-tag {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      font-size: 0.72rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* METRIC CARDS ROW */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .metric-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+    }
+    .metric-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+    }
+    .metric-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .metric-blue { background: #eff6ff; color: #2563eb; }
+    .metric-indigo { background: #eef2ff; color: #4f46e5; }
+    .metric-emerald { background: #ecfdf5; color: #059669; }
+    .metric-amber { background: #fffbeb; color: #d97706; }
+
+    .metric-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .metric-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .metric-value {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    /* SECTION CONTAINERS */
+    .content-section {
+      display: none;
+    }
+    .content-section.active {
+      display: block;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* CARD STYLES */
+    .saas-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+    }
+    .card-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-title {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+    .card-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* BUTTONS */
+    .btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: inherit;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      box-shadow: 0 2px 6px rgba(67, 56, 202, 0.2);
+    }
+    .btn-primary:hover {
+      background: var(--primary-light);
+      box-shadow: 0 4px 12px rgba(67, 56, 202, 0.3);
+    }
+    .btn-secondary {
+      background: #f1f5f9;
+      color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+    .btn-outline {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--text-secondary);
+    }
+    .btn-outline:hover {
+      background: #f8fafc;
+      color: var(--text);
+      border-color: #cbd5e1;
+    }
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+    .btn-success:hover {
+      background: #047857;
+    }
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      border-radius: var(--radius-sm);
+    }
+    .btn-pill {
+      border-radius: var(--radius-pill);
+    }
+    .btn:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    /* BADGES */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .badge-primary { background: var(--primary-subtle); color: var(--primary); }
+    .badge-success { background: var(--success-light); color: var(--success); }
+    .badge-warning { background: var(--warning-light); color: var(--warning); }
+    .badge-danger { background: var(--danger-light); color: var(--danger); }
+    .badge-neutral { background: #f1f5f9; color: var(--text-secondary); }
+    .badge-new { background: #dbeafe; color: #1d4ed8; }
+    .badge-in_progress { background: #fef3c7; color: #92400e; }
+    .badge-done { background: #dcfce7; color: #166534; }
+    .badge-blocked { background: #fee2e2; color: #991b1b; }
+    .badge-cancelled { background: #f1f5f9; color: #64748b; }
+    .badge-silent { background: #fce7f3; color: #9d174d; }
+
+    /* FORM CONTROLS */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      font-family: inherit;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--primary-accent);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+    }
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    /* GRID UTILITIES */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 1100px) {
+      .app-frame { grid-template-columns: 200px 1fr; }
+      .sidebar-right { display: none; }
+      .metrics-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .app-frame { grid-template-columns: 1fr; }
+      .sidebar-left { display: none; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* DATA TABLES */
+    .table-responsive {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+    }
+    .saas-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.84rem;
+      text-align: left;
+    }
+    .saas-table th {
+      background: #f8fafc;
+      padding: 10px 14px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .saas-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text);
+    }
+    .saas-table tr:last-child td {
+      border-bottom: none;
+    }
+    .saas-table tr:hover td {
+      background: #f8fbff;
+    }
+
+    /* RIGHT SIDEBAR */
+    .sidebar-right {
+      background: #ffffff;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      overflow-y: auto;
+    }
+
+    .user-profile-widget {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .user-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+    .user-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .user-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .user-role {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* MINI CALENDAR - Matching reference */
+    .calendar-widget {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+    }
+    .calendar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+    .calendar-days-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      text-align: center;
+    }
+    .cal-day-cell {
+      padding: 8px 4px;
+      border-radius: var(--radius-md);
+      background: #f8fafc;
+      font-size: 0.72rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+    .cal-day-cell.active {
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+    }
+    .cal-day-label {
+      font-weight: 600;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      opacity: 0.8;
+    }
+    .cal-day-num {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    /* QUICK CONTACTS LIST */
+    .quick-list-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .quick-list-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .contact-item-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .contact-avatar-sm {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #e0e7ff;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.75rem;
+      flex-shrink: 0;
+    }
+    .contact-meta-col {
+      flex: 1;
+      min-width: 0;
+    }
+    .contact-row-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+    }
+    .contact-row-name:hover {
+      color: var(--primary);
+    }
+    .contact-row-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .contact-action-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #ffffff;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .contact-action-btn:hover {
+      background: var(--primary-subtle);
+      color: var(--primary);
+      border-color: var(--primary-accent);
+    }
+
+    /* INTELLIGENCE CARDS & EVIDENCE */
+    .intelligence-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      font-size: 0.88rem;
+    }
+    .intelligence-box-title {
+      font-weight: 700;
+      color: #166534;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .evidence-quote {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      padding: 6px 10px;
+      margin-top: 6px;
+      background: #f8fafc;
+      border-left: 3px solid var(--primary-accent);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-style: italic;
+    }
+
+    /* BRIEF COMPARISON */
+    .brief-comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .brief-pane {
+      border-radius: var(--radius-md);
+      padding: 18px;
+      border: 1px solid var(--border);
+      background: #ffffff;
+    }
+    .brief-pane-off {
+      background: #fff8f8;
+      border-color: #fecaca;
+    }
+    .brief-pane-on {
+      background: #f8fcff;
+      border-color: #bfdbfe;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.06);
+    }
+    .brief-pane-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 0.86rem;
+      padding-bottom: 10px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .brief-pane-body {
+      font-size: 0.86rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    /* LOADING SPINNER */
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #ffffff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .spinner-dark {
+      border: 2px solid var(--border);
+      border-top-color: var(--primary);
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* TOAST */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      pointer-events: none;
+    }
+    .saas-toast {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.25s ease;
+      pointer-events: auto;
+    }
+    .saas-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* FILTER PILLS */
+    .filter-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .filter-pill {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-pill:hover, .filter-pill.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* PROGRESS BAR */
+    .progress-bar-bg {
+      height: 7px;
+      background: #e2e8f0;
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+      width: 100px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: var(--radius-pill);
+      transition: width 0.4s ease;
+    }
+
+    /* CONTACT PROFILE CARD */
+    .contact-profile-card {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+    .contact-profile-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .contact-lg-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-frame">
+
+  <!-- CONSENT BANNER -->
+  <div class="consent-banner">
+    <div class="consent-banner-text">
+      <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+      <span><strong>AI Processing & Privacy Notice:</strong> Meeting transcripts and recordings are processed using Hindsight Cloud Memory & Groq Intelligence. Ensure stakeholder consent before ingesting sensitive recordings.</span>
+    </div>
+    <div style="font-size: 0.72rem; color: var(--text-muted);">
+      Memory Bank: <code>meeting-intelligence</code>
+    </div>
+  </div>
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar-left">
+    <!-- Brand -->
+    <a href="#" class="brand-container" onclick="showSection('dashboard'); return false;">
+      <div class="brand-logo-mark">
+        <svg class="icon icon-lg" viewBox="0 0 24 24" stroke="currentColor">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M12 3v3m0 12v3m9-9h-3M6 12H3m14.364-6.364l-2.121 2.121M7.757 16.243l-2.121 2.121m12.728 0l-2.121-2.121M7.757 7.757L5.636 5.636"></path>
+        </svg>
+      </div>
+      <div class="brand-text-block">
+        <span class="brand-title">RELATIO</span>
+        <span class="brand-tagline">Relationship Intelligence</span>
+      </div>
+    </a>
+
+    <!-- Nav Items -->
+    <nav class="nav-menu">
+      <span class="nav-label">Core Agent</span>
+      
+      <button class="nav-item active" onclick="showSection('dashboard', this)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="14" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect></svg>
+        <span>Dashboard</span>
+      </button>
+
+      <button class="nav-item" onclick="showSection('contacts', this)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span>Contacts & Memory</span>
+        <span class="nav-badge" id="sidebarContactCount">0</span>
+      </button>
+
+      <button class="nav-item" onclick="showSection('process', this)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+        <span>Ingest Meeting</span>
+      </button>
+
+      <button class="nav-item" onclick="showSection('brief', this)">
+        <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+        <span>Meeting Brief</span>
+      </button>
+
+      <button class="nav-item" onclick="showSection('tasks', this)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+        <span>Commitments</span>
+        <span class="nav-badge" id="sidebarTaskCount">0</span>
+      </button>
+
+      <span class="nav-label">Intelligence</span>
+
+      <button class="nav-item" onclick="showSection('analytics', this)">
+        <svg class="icon" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+        <span>Analytics & Drift</span>
+      </button>
+
+      <button class="nav-item" onclick="showSection('meetings', this)">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        <span>Meeting History</span>
+      </button>
+
+      <button class="nav-item" onclick="showSection('calendar', this)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M21 10H3"></path><path d="M16 2v4M8 2v4"></path><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"></path></svg>
+        <span>Calendar Events</span>
+      </button>
+
+      <button class="nav-item" onclick="showSection('export', this)">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        <span>Export & Corrections</span>
+      </button>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+      <div class="status-card">
+        <div class="status-row">
+          <span style="font-weight:700; color:var(--text);">Hindsight Cloud</span>
+          <span id="hsStatusBadge" style="display:flex;align-items:center;gap:4px;color:var(--success);font-weight:700;">
+            <span class="status-dot"></span> Live
+          </span>
+        </div>
+        <div class="status-row" style="margin-bottom:0; color:var(--text-muted);">
+          <span>LLM Provider</span>
+          <span style="font-weight:600; color:var(--text);">Groq LLaMA-3.3</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- CENTER MAIN WORKSPACE -->
+  <main class="workspace">
+    <!-- Header -->
+    <header class="workspace-header">
+      <div class="search-bar-wrapper">
+        <svg class="icon icon-sm search-icon-pos" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <input type="text" id="globalSearchInput" class="search-input" placeholder="Search contacts, commitments, memory notes..." oninput="handleGlobalSearch(this.value)">
+      </div>
+
+      <div class="header-actions">
+        <button class="btn btn-primary btn-pill" onclick="showSection('process')">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>Ingest Meeting</span>
+        </button>
+
+        <button class="btn btn-secondary btn-pill" onclick="showCreateContactModal()">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+          <span>Add Contact</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Workspace Body Content -->
+    <div class="workspace-content">
+
+      <!-- ================= DASHBOARD OVERVIEW ================= -->
+      <section id="section-dashboard" class="content-section active">
+        <!-- Hero Banner -->
+        <div class="hero-banner">
+          <div class="hero-content">
+            <span class="hero-badge-tag">Memory-Driven CRM</span>
+            <h1 class="hero-greeting">Welcome to RELATIO</h1>
+            <p class="hero-desc">Relationship Intelligence for Better Meetings. Seamlessly bridge past commitments, stakeholder preferences, and meeting outcomes with long-term Hindsight memory.</p>
+            <button class="hero-btn" onclick="showSection('brief')">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+              <span>Prepare Meeting Brief</span>
+            </button>
+          </div>
+          <!-- Abstract clean vector illustration -->
+          <svg width="140" height="140" viewBox="0 0 100 100" style="opacity:0.85; flex-shrink:0;">
+            <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="2" stroke-dasharray="4 4" />
+            <circle cx="30" cy="35" r="10" fill="rgba(255,255,255,0.2)" stroke="white" stroke-width="2" />
+            <circle cx="70" cy="40" r="14" fill="rgba(255,255,255,0.3)" stroke="white" stroke-width="2" />
+            <circle cx="50" cy="70" r="12" fill="rgba(255,255,255,0.25)" stroke="white" stroke-width="2" />
+            <line x1="38" y1="40" x2="58" y2="40" stroke="white" stroke-width="2" />
+            <line x1="36" y1="42" x2="44" y2="62" stroke="white" stroke-width="2" />
+            <line x1="64" y1="52" x2="56" y2="62" stroke="white" stroke-width="2" />
+          </svg>
+        </div>
+
+        <!-- Metrics Row -->
+        <div class="metrics-row">
+          <div class="metric-card">
+            <div class="metric-icon-box metric-indigo">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg>
+            </div>
+            <div class="metric-info">
+              <span class="metric-label">Key Contacts</span>
+              <span class="metric-value" id="dashContactsVal">0</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon-box metric-blue">
+              <svg class="icon" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"></path><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+            </div>
+            <div class="metric-info">
+              <span class="metric-label">Commitments</span>
+              <span class="metric-value" id="dashTasksVal">0</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon-box metric-emerald">
+              <svg class="icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </div>
+            <div class="metric-info">
+              <span class="metric-label">Memory Units</span>
+              <span class="metric-value" id="dashMemoriesVal">0</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon-box metric-amber">
+              <svg class="icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line></svg>
+            </div>
+            <div class="metric-info">
+              <span class="metric-label">Meetings Synced</span>
+              <span class="metric-value" id="dashMeetingsVal">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Commitments & Follow-ups Table -->
+        <div class="saas-card">
+          <div class="card-header-row">
+            <div class="card-title-group">
+              <svg class="icon icon-sm" viewBox="0 0 24 24" style="color:var(--primary);"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              <div>
+                <h2 class="card-title">Recent Commitments & Follow-Through</h2>
+                <p class="card-subtitle">Active promises made across meetings needing attention</p>
+              </div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="showSection('tasks')">View All Commitments</button>
+          </div>
+          <div class="table-responsive">
+            <table class="saas-table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Stakeholder / Owner</th>
+                  <th>Deadline</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="dashCommitmentTableBody">
+                <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px;">Loading commitments...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CONTACTS & MEMORY ================= -->
+      <section id="section-contacts" class="content-section">
+        <div class="card-header-row">
+          <div>
+            <h2 class="card-title">Stakeholder CRM & Relationship Memory</h2>
+            <p class="card-subtitle">Explore each contact's memory profile, commitments, meeting history, and evolution.</p>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="btn btn-primary btn-sm" onclick="showCreateContactModal()">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span>New Contact</span>
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="loadContacts()">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+              <span>Refresh</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid-2" style="grid-template-columns: 340px 1fr; align-items: start;">
+          <!-- Contact Directory List -->
+          <div>
+            <div class="saas-card" style="padding:16px;">
+              <h3 style="font-size:0.9rem; font-weight:700; margin-bottom:12px; color:var(--text-secondary);">All Contacts</h3>
+              <div id="contactList" style="display:flex; flex-direction:column; gap:8px;">
+                <p style="color:var(--text-muted); font-size:0.85rem;">Loading contacts...</p>
+              </div>
+            </div>
+
+            <!-- Create Contact Box (hidden by default) -->
+            <div class="saas-card" id="createContactCard" style="display:none;">
+              <div class="card-header-row">
+                <h3 class="card-title" style="font-size:0.95rem;">New Contact</h3>
+                <button class="btn btn-outline btn-sm" onclick="document.getElementById('createContactCard').style.display='none'">✕</button>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Full Name *</label>
+                <input type="text" id="newContactName" class="form-control" placeholder="e.g. Rahul Sharma">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Company / Organization</label>
+                <input type="text" id="newContactCompany" class="form-control" placeholder="e.g. Acme Health">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Role / Title</label>
+                <input type="text" id="newContactRole" class="form-control" placeholder="e.g. VP Engineering">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Context / Background</label>
+                <textarea id="newContactNotes" class="form-control" placeholder="Key context, initial background..." style="min-height:70px;"></textarea>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button class="btn btn-primary btn-sm" onclick="createContact()">Create Contact</button>
+                <button class="btn btn-outline btn-sm" onclick="document.getElementById('createContactCard').style.display='none'">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact Profile & Deep Intelligence Pane -->
+          <div id="contactDetail" style="display:none;">
+            <!-- Profile Card -->
+            <div class="contact-profile-card">
+              <div class="contact-profile-top">
+                <div class="contact-lg-avatar" id="contactDetailAvatar">RS</div>
+                <div style="flex:1;">
+                  <h2 id="contactDetailName" style="font-size:1.3rem; font-weight:800; color:var(--text);"></h2>
+                  <div id="contactDetailMeta" style="font-size:0.85rem; color:var(--text-secondary); margin-top:3px;"></div>
+                </div>
+                <div style="display:flex; gap:8px;">
+                  <button class="btn btn-primary btn-sm" onclick="generateContactBrief()">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                    <span>Pre-Meeting Brief</span>
+                  </button>
+                  <button class="btn btn-outline btn-sm" onclick="showContactEvolution()">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    <span>Evolution</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Sub-tabs within contact -->
+              <div class="filter-pills" style="margin-bottom:0; border-top:1px solid var(--border-subtle); padding-top:14px;">
+                <button class="filter-pill active" onclick="switchContactTab('notes', this)">Add Notes</button>
+                <button class="filter-pill" onclick="switchContactTab('memories', this)">Memories & Context</button>
+                <button class="filter-pill" onclick="switchContactTab('query', this)">Memory Q&A</button>
+                <button class="filter-pill" onclick="switchContactTab('commitments', this)">Commitments</button>
+              </div>
+            </div>
+
+            <!-- Tab 1: Add Meeting Notes -->
+            <div id="contactTab-notes" class="saas-card">
+              <div class="card-header-row">
+                <div>
+                  <h3 class="card-title">Add Meeting Notes & Ingest Intelligence</h3>
+                  <p class="card-subtitle">Paste discussion notes or transcripts. RELATIO will extract facts, decisions, and store them into Hindsight Cloud.</p>
+                </div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group">
+                  <label class="form-label">Meeting Title</label>
+                  <input type="text" id="contactMeetTitle" class="form-control" placeholder="e.g. Discovery Call / Budget Sync">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Meeting Date</label>
+                  <input type="date" id="contactMeetDate" class="form-control">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Notes / Transcript</label>
+                <textarea id="contactMeetNotes" class="form-control" placeholder="Paste meeting notes or conversation transcript here...&#10;&#10;e.g. Rahul mentioned that pricing is a concern but the enterprise plan looks interesting. He prefers to discuss technical details before commercial terms. He asked about the API integration timeline..."></textarea>
+              </div>
+              <button class="btn btn-primary" id="addNotesBtn" onclick="addContactNotes()">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                <span>Process & Store in Memory</span>
+              </button>
+              <div id="addNotesResult" style="display:none; margin-top:16px;"></div>
+            </div>
+
+            <!-- Tab 2: Memories & Context -->
+            <div id="contactTab-memories" class="saas-card" style="display:none;">
+              <div class="card-header-row">
+                <div>
+                  <h3 class="card-title">Relationship Memories</h3>
+                  <p class="card-subtitle">Permanent facts, preferences, decisions, and concerns learned over time</p>
+                </div>
+              </div>
+              <div class="filter-pills">
+                <button class="filter-pill active" onclick="filterContactMemories('', this)">All</button>
+                <button class="filter-pill" onclick="filterContactMemories('concern', this)">Concerns</button>
+                <button class="filter-pill" onclick="filterContactMemories('interest', this)">Interests</button>
+                <button class="filter-pill" onclick="filterContactMemories('preference', this)">Preferences</button>
+                <button class="filter-pill" onclick="filterContactMemories('decision', this)">Decisions</button>
+                <button class="filter-pill" onclick="filterContactMemories('change', this)">Changes</button>
+              </div>
+              <div id="contactMemories" style="display:flex; flex-direction:column; gap:10px;">
+                <p style="color:var(--text-muted)">No memories yet.</p>
+              </div>
+            </div>
+
+            <!-- Tab 3: Memory Q&A -->
+            <div id="contactTab-query" class="saas-card" style="display:none;">
+              <div class="card-header-row">
+                <div>
+                  <h3 class="card-title">Ask Memory Agent</h3>
+                  <p class="card-subtitle">Query what RELATIO remembers about this contact across all interactions</p>
+                </div>
+              </div>
+              <div class="filter-pills">
+                <button class="filter-pill" onclick="setMemoryQuery('What do we know about this person?')">What do we know?</button>
+                <button class="filter-pill" onclick="setMemoryQuery('What are their biggest concerns?')">Biggest concerns?</button>
+                <button class="filter-pill" onclick="setMemoryQuery('What did I promise them?')">My promises?</button>
+                <button class="filter-pill" onclick="setMemoryQuery('How have their priorities changed?')">Priority changes?</button>
+              </div>
+              <div class="form-group">
+                <textarea id="memoryQueryInput" class="form-control" placeholder="Ask anything about what this person said, wanted, or decided..." style="min-height:75px;"></textarea>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="runMemoryQuery()">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span>Search Memory</span>
+              </button>
+              <div id="memoryQueryResult" style="display:none; margin-top:16px;"></div>
+            </div>
+
+            <!-- Tab 4: Commitments -->
+            <div id="contactTab-commitments" class="saas-card" style="display:none;">
+              <div class="card-header-row">
+                <div>
+                  <h3 class="card-title">Mutual Commitments</h3>
+                  <p class="card-subtitle">Tasks and promises tracked with this stakeholder</p>
+                </div>
+              </div>
+              <div id="contactCommitments" style="display:flex; flex-direction:column; gap:10px;">
+                <p style="color:var(--text-muted)">No commitments recorded.</p>
+              </div>
+            </div>
+
+            <!-- Brief Panel Display (Full Width when activated) -->
+            <div id="briefPanel" class="saas-card" style="display:none;">
+              <div class="card-header-row">
+                <div class="card-title-group">
+                  <svg class="icon" viewBox="0 0 24 24" style="color:var(--primary);"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                  <h3 class="card-title" id="briefPanelTitle">Pre-Meeting Brief</h3>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="document.getElementById('briefPanel').style.display='none'">✕ Close</button>
+              </div>
+              <div class="grid-2" style="margin-bottom:12px;">
+                <input type="text" id="briefObjective" class="form-control" placeholder="Optional meeting goal (e.g. resolve contract pricing, review API roadmap)">
+                <button class="btn btn-primary btn-sm" onclick="generateContactBrief()" style="height:42px;">Regenerate Brief</button>
+              </div>
+              <div id="briefPanelContent" class="brief-pane-body" style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-md); padding:18px;"></div>
+              <div id="briefPanelCitations" style="margin-top:14px; display:none;">
+                <h4 style="font-size:0.85rem; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">Evidence & Memory Citations:</h4>
+                <div id="briefCitationList"></div>
+              </div>
+              <div id="briefPanelStats" style="margin-top:10px; font-size:0.78rem; color:var(--text-muted);"></div>
+            </div>
+
+            <!-- Evolution Panel Display -->
+            <div id="evolutionPanel" class="saas-card" style="display:none;">
+              <div class="card-header-row">
+                <div class="card-title-group">
+                  <svg class="icon" viewBox="0 0 24 24" style="color:var(--primary);"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                  <h3 class="card-title" id="evolutionPanelTitle">Relationship Evolution</h3>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="document.getElementById('evolutionPanel').style.display='none'">✕ Close</button>
+              </div>
+              <div id="evolutionContent" class="brief-pane-body" style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-md); padding:18px;"></div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= INGEST MEETING ================= -->
+      <section id="section-process" class="content-section">
+        <div class="saas-card">
+          <div class="card-header-row">
+            <div>
+              <h2 class="card-title">Ingest & Process Meeting</h2>
+              <p class="card-subtitle">Extract tasks, decisions, stakeholder sentiments, and retain in Hindsight memory.</p>
+            </div>
+          </div>
+          <form id="processForm" onsubmit="return processMeeting(event)">
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Meeting Title *</label>
+                <input type="text" id="meetTitle" class="form-control" placeholder="e.g. Q3 Roadmap Review with Product & Engineering" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Date *</label>
+                <input type="date" id="meetDate" class="form-control" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Team / Department</label>
+              <input type="text" id="meetTeam" class="form-control" value="product" placeholder="product, sales, engineering, executive">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Meeting Transcript / Raw Notes</label>
+              <textarea id="meetTranscript" class="form-control" style="min-height:160px;" placeholder="Paste meeting transcript or notes here...&#10;&#10;Speaker 1: Thanks everyone for joining. Today we need to lock down the Q3 timeline.&#10;Speaker 2: I can commit to finishing the authentication flow by Friday..."></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Or Upload Audio File (Whisper Transcription)</label>
+              <input type="file" id="meetAudio" class="form-control" accept=".mp3,.m4a,.wav,.ogg,.flac,.mp4,.webm">
+            </div>
+            <button type="submit" class="btn btn-primary" id="processBtn">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+              <span>Process Meeting & Retain</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Meeting Ingestion Results -->
+        <div id="processResults" style="display:none;">
+          <div class="saas-card">
+            <div class="card-header-row">
+              <div class="card-title-group">
+                <svg class="icon" viewBox="0 0 24 24" style="color:var(--success);"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <h3 class="card-title">Meeting Processed & Synchronized</h3>
+              </div>
+            </div>
+            <div id="resultSummary"></div>
+          </div>
+
+          <!-- Confirm Participants -->
+          <div class="saas-card" id="participantCard">
+            <div class="card-header-row">
+              <div>
+                <h3 class="card-title">Detected Participants</h3>
+                <p class="card-subtitle">Verify and adjust detected attendees for correct relationship mapping.</p>
+              </div>
+            </div>
+            <div id="participantList" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;"></div>
+            <button class="btn btn-success btn-sm" onclick="confirmParticipants()">
+              <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Confirm Participants</span>
+            </button>
+          </div>
+
+          <!-- Extracted Tasks & Decisions -->
+          <div class="grid-2">
+            <div class="saas-card">
+              <h3 class="card-title" style="margin-bottom:12px;">Extracted Tasks (<span id="taskCount">0</span>)</h3>
+              <div id="extractedTasks" style="display:flex; flex-direction:column; gap:8px;"></div>
+            </div>
+            <div class="saas-card">
+              <h3 class="card-title" style="margin-bottom:12px;">Key Decisions</h3>
+              <div id="extractedDecisions" style="display:flex; flex-direction:column; gap:8px;"></div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="saas-card">
+              <h3 class="card-title" style="margin-bottom:12px;">Ideas & Perspectives</h3>
+              <div id="extractedIdeas" style="display:flex; flex-direction:column; gap:8px;"></div>
+            </div>
+            <div class="saas-card">
+              <h3 class="card-title" style="margin-bottom:12px;">Open Issues & Blockers</h3>
+              <div id="extractedIssues" style="display:flex; flex-direction:column; gap:8px;"></div>
+            </div>
+          </div>
+
+          <div class="saas-card">
+            <h3 class="card-title" style="margin-bottom:12px;">Important Dates & Deadlines</h3>
+            <div id="extractedDates" style="display:flex; flex-direction:column; gap:8px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PRE-MEETING BRIEF ================= -->
+      <section id="section-brief" class="content-section">
+        <div class="saas-card">
+          <div class="card-header-row">
+            <div>
+              <h2 class="card-title">Pre-Meeting Executive Brief</h2>
+              <p class="card-subtitle">Generate an intelligent brief before your next meeting. Compare baseline results against Hindsight memory-enhanced context.</p>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Your Name (or Meeting Participant)</label>
+              <input type="text" id="briefName" class="form-control" placeholder="e.g. Alex Morgan or Rahul">
+            </div>
+            <div class="form-group" style="display:flex; align-items:flex-end;">
+              <button class="btn btn-primary" onclick="generateBrief()" style="height:42px; width:100%;">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+                <span>Generate Comparative Brief</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="briefResults" style="display:none;">
+          <div class="brief-comparison-grid">
+            <!-- Memory Baseline -->
+            <div class="brief-pane brief-pane-off">
+              <div class="brief-pane-header" style="color:#991b1b;">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                <span>Baseline (Without Memory)</span>
+              </div>
+              <div id="briefBaseline" class="brief-pane-body"></div>
+            </div>
+
+            <!-- Memory ON -->
+            <div class="brief-pane brief-pane-on">
+              <div class="brief-pane-header" style="color:#1d4ed8;">
+                <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>Enhanced (Hindsight Memory Active)</span>
+              </div>
+              <div id="briefEnhanced" class="brief-pane-body"></div>
+            </div>
+          </div>
+
+          <div class="saas-card" id="briefCitations" style="display:none; margin-top:16px;">
+            <h3 class="card-title" style="margin-bottom:8px;">Hindsight Reflect Evidence Citations</h3>
+            <div id="citationList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= ALL COMMITMENTS ================= -->
+      <section id="section-tasks" class="content-section">
+        <div class="saas-card">
+          <div class="card-header-row">
+            <div>
+              <h2 class="card-title">Commitment Tracking & Accountability</h2>
+              <p class="card-subtitle">Every task extracted from meetings, assigned owners, and deadline histories.</p>
+            </div>
+            <div class="filter-pills" style="margin-bottom:0;">
+              <button class="filter-pill active" onclick="loadTasks()">All</button>
+              <button class="filter-pill" onclick="loadTasks('new')">New</button>
+              <button class="filter-pill" onclick="loadTasks('in_progress')">In Progress</button>
+              <button class="filter-pill" onclick="loadTasks('done')">Done</button>
+              <button class="filter-pill" onclick="loadTasks('blocked')">Blocked</button>
+            </div>
+          </div>
+          <div id="taskList" style="display:flex; flex-direction:column; gap:10px;">
+            <p style="color:var(--text-muted)">Loading tasks...</p>
+          </div>
+        </div>
+
+        <div class="saas-card">
+          <div class="card-header-row">
+            <div>
+              <h3 class="card-title">Silent Tasks</h3>
+              <p class="card-subtitle">Tasks agreed on or discussed in meetings without an explicitly assigned owner</p>
+            </div>
+            <span class="badge badge-silent">Unassigned</span>
+          </div>
+          <div id="silentTaskList" style="display:flex; flex-direction:column; gap:8px;"></div>
+        </div>
+      </section>
+
+      <!-- ================= ANALYTICS & DRIFT ================= -->
+      <section id="section-analytics" class="content-section">
+        <div class="saas-card">
+          <div class="card-header-row">
+            <div>
+              <h2 class="card-title">Stakeholder Follow-Through Ratings</h2>
+              <p class="card-subtitle">Measured accountability based on completed promises vs agreed deadlines.</p>
+            </div>
+          </div>
+          <div id="followThrough"></div>
+        </div>
+
+        <div class="grid-2">
+          <div class="saas-card">
+            <h3 class="card-title" style="margin-bottom:8px;">Promise Drift</h3>
+            <p class="card-subtitle" style="margin-bottom:12px;">Tasks where the target deadline has postponed repeatedly.</p>
+            <div id="promiseDrift"></div>
+          </div>
+          <div class="saas-card">
+            <h3 class="card-title" style="margin-bottom:8px;">Stuck Topics</h3>
+            <p class="card-subtitle" style="margin-bottom:12px;">Issues recurring across 3+ meetings without formal resolution.</p>
+            <div id="stuckTopics"></div>
+          </div>
+        </div>
+
+        <div class="saas-card">
+          <div class="card-header-row">
+            <div>
+              <h3 class="card-title">Mental Models & Behavioral Patterns</h3>
+              <p class="card-subtitle">Long-term synthesized observations generated by Hindsight reflect models.</p>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-md); padding:16px;">
+              <h4 style="font-size:0.85rem; font-weight:700; margin-bottom:8px;">Task Slip Patterns</h4>
+              <div id="mentalModelSlip" style="font-size:0.85rem; color:var(--text-secondary);">Loading patterns...</div>
+            </div>
+            <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-md); padding:16px;">
+              <h4 style="font-size:0.85rem; font-weight:700; margin-bottom:8px;">Decision Reversal Tracker</h4>
+              <div id="mentalModelReverse" style="font-size:0.85rem; color:var(--text-secondary);">Loading reversals...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MEETING HISTORY ================= -->
+      <section id="section-meetings" class="content-section">
+        <div class="saas-card">
+          <div class="card-header-row">
+            <div>
+              <h2 class="card-title">Meeting Archives</h2>
+              <p class="card-subtitle">Historical records of all processed transcripts and synchronization status.</p>
+            </div>
+          </div>
+          <div id="meetingList"></div>
+        </div>
+
+        <div id="meetingDetail" class="saas-card" style="display:none;">
+          <div class="card-header-row">
+            <h3 class="card-title" id="detailTitle"></h3>
+            <button class="btn btn-outline btn-sm" onclick="document.getElementById('meetingDetail').style.display='none'">✕ Close</button>
+          </div>
+          <div id="detailContent"></div>
+        </div>
+      </section>
+
+      <!-- ================= CALENDAR ================= -->
+      <section id="section-calendar" class="content-section">
+        <div class="saas-card">
+          <div class="card-header-row">
+            <div>
+              <h2 class="card-title">Proposed Calendar Events</h2>
+              <p class="card-subtitle">Review dates and deadlines extracted from meetings before generating an .ics calendar file.</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Select Meeting</label>
+            <select id="calendarMeetingSelect" class="form-control" onchange="loadProposedEvents()">
+              <option value="">Select a meeting...</option>
+            </select>
+          </div>
+          <div id="proposedEvents" style="display:flex; flex-direction:column; gap:8px;"></div>
+          <button class="btn btn-success" id="downloadIcsBtn" onclick="downloadIcs()" style="display:none; margin-top:16px;">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>Confirm & Download .ics</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= EXPORT & CORRECTIONS ================= -->
+      <section id="section-export" class="content-section">
+        <div class="saas-card">
+          <div class="card-header-row">
+            <div>
+              <h2 class="card-title">Export Intelligence Data</h2>
+              <p class="card-subtitle">Download tasks and issues into standard formats for reports or external tools.</p>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-md); padding:16px;">
+              <h4 style="font-size:0.9rem; font-weight:700; margin-bottom:8px;">Open Tasks</h4>
+              <div style="display:flex; gap:8px;">
+                <a class="btn btn-outline btn-sm" href="/api/export/tasks/markdown" download>
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+                  <span>Markdown</span>
+                </a>
+                <a class="btn btn-outline btn-sm" href="/api/export/tasks/csv" download>
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline></svg>
+                  <span>CSV</span>
+                </a>
+              </div>
+            </div>
+
+            <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-md); padding:16px;">
+              <h4 style="font-size:0.9rem; font-weight:700; margin-bottom:8px;">Open Issues</h4>
+              <div style="display:flex; gap:8px;">
+                <a class="btn btn-outline btn-sm" href="/api/export/issues/markdown" download>
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path></svg>
+                  <span>Markdown</span>
+                </a>
+                <a class="btn btn-outline btn-sm" href="/api/export/issues/csv" download>
+                  <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"></polyline></svg>
+                  <span>CSV</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Human-in-the-loop corrections -->
+        <div class="saas-card">
+          <div class="card-header-row">
+            <div>
+              <h3 class="card-title">Submit Extraction Correction</h3>
+              <p class="card-subtitle">Enables agent self-improvement. Corrections train future extraction prompt context.</p>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="form-group"><label class="form-label">Meeting ID</label><input type="text" id="corrMeeting" class="form-control" placeholder="e.g. 1"></div>
+            <div class="form-group"><label class="form-label">Task Key</label><input type="text" id="corrTaskKey" class="form-control" placeholder="e.g. update_dashboard"></div>
+            <div class="form-group"><label class="form-label">Field</label><input type="text" id="corrField" class="form-control" placeholder="e.g. owner"></div>
+            <div class="form-group"><label class="form-label">Original Value</label><input type="text" id="corrOriginal" class="form-control" placeholder="e.g. null"></div>
+            <div class="form-group" style="grid-column:1 / -1;"><label class="form-label">Corrected Value</label><input type="text" id="corrCorrected" class="form-control" placeholder="e.g. Rahul Sharma"></div>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="submitCorrection()">
+            <svg class="icon icon-sm" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>Submit Feedback</span>
+          </button>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- RIGHT SIDEBAR (Matching reference panel) -->
+  <aside class="sidebar-right">
+    <!-- User Profile Header -->
+    <div class="user-profile-widget">
+      <div class="user-avatar">AM</div>
+      <div class="user-info">
+        <div class="user-name">Alex Morgan</div>
+        <div class="user-role">Product & Partnerships</div>
+      </div>
+      <button class="contact-action-btn" title="Settings">
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+      </button>
+    </div>
+
+    <!-- Schedule / Calendar Widget -->
+    <div class="calendar-widget">
+      <div class="calendar-header">
+        <span style="font-weight:700;">Meeting Schedule</span>
+        <span style="color:var(--primary); font-size:0.75rem; font-weight:700;" id="calMonthLabel">Sep 2026</span>
+      </div>
+      <div class="calendar-days-row">
+        <div class="cal-day-cell">
+          <span class="cal-day-label">Mon</span>
+          <span class="cal-day-num">28</span>
+        </div>
+        <div class="cal-day-cell active">
+          <span class="cal-day-label">Tue</span>
+          <span class="cal-day-num">29</span>
+        </div>
+        <div class="cal-day-cell">
+          <span class="cal-day-label">Wed</span>
+          <span class="cal-day-num">30</span>
+        </div>
+        <div class="cal-day-cell">
+          <span class="cal-day-label">Thu</span>
+          <span class="cal-day-num">01</span>
+        </div>
+        <div class="cal-day-cell">
+          <span class="cal-day-label">Fri</span>
+          <span class="cal-day-num">02</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Key Stakeholders List -->
+    <div>
+      <div class="quick-list-header">
+        <span class="quick-list-title">Key Stakeholders</span>
+        <button class="btn btn-outline btn-sm" onclick="showSection('contacts')" style="padding:2px 8px; font-size:0.72rem;">View All</button>
+      </div>
+      <div id="quickContactsList" style="display:flex; flex-direction:column;">
+        <p style="color:var(--text-muted); font-size:0.8rem; padding:8px 0;">Loading stakeholders...</p>
+      </div>
+    </div>
+
+    <!-- Quick Intelligence Insight Box -->
+    <div class="intelligence-box">
+      <div class="intelligence-box-title">
+        <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        <span>Agent Memory Active</span>
+      </div>
+      <p style="font-size:0.78rem; color:#14532d; line-height:1.45;">
+        Hindsight Cloud retains relationship nuances, stakeholder priorities, and deadline shifts across all meetings.
+      </p>
+    </div>
+  </aside>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast-container">
+  <div id="toast" class="saas-toast"></div>
+</div>
+
+<script>
+const API = '';
+let lastProcessedMeetingId = null;
+let lastExtraction = null;
+let proposedEventsData = [];
+let allContactsCache = [];
+let allTasksCache = [];
+let currentContactId = null;
+
+// ---- Navigation ----
+function showSection(name, btn) {
+  document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(t => t.classList.remove('active'));
+  
+  const target = document.getElementById('section-' + name);
+  if (target) target.classList.add('active');
+  
+  const tabBtn = btn || document.querySelector(`.nav-item[onclick*="'${name}'"]`);
+  if (tabBtn) tabBtn.classList.add('active');
+  
+  // Section data initializers
+  if (name === 'dashboard') { loadDashboard(); }
+  if (name === 'tasks') { loadTasks(); loadSilentTasks(); }
+  if (name === 'analytics') { loadAnalytics(); }
+  if (name === 'meetings') { loadMeetings(); }
+  if (name === 'calendar') { loadMeetingsForCalendar(); }
+  if (name === 'contacts') { loadContacts(); }
+}
+
+// ---- Toast Notification ----
+function toast(msg, duration = 3500) {
+  const t = document.getElementById('toast');
+  t.innerHTML = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+// ---- Dashboard Data Loader ----
+async function loadDashboard() {
+  try {
+    // Health status check
+    fetch(API + '/api/health').then(r => r.json()).then(data => {
+      const badge = document.getElementById('hsStatusBadge');
+      if (data.hindsight_connected) {
+        badge.innerHTML = '<span class="status-dot"></span> Live';
+        badge.style.color = 'var(--success)';
+      } else {
+        badge.innerHTML = '<span class="status-dot" style="background:#e11d48"></span> Offline';
+        badge.style.color = 'var(--danger)';
+      }
+    }).catch(() => {});
+
+    // Contacts
+    const respContacts = await fetch(API + '/api/contacts');
+    const contacts = await respContacts.json();
+    allContactsCache = Array.isArray(contacts) ? contacts : [];
+    document.getElementById('dashContactsVal').textContent = allContactsCache.length;
+    document.getElementById('sidebarContactCount').textContent = allContactsCache.length;
+    renderQuickContacts(allContactsCache.slice(0, 5));
+
+    // Commitments
+    const respTasks = await fetch(API + '/api/commitments');
+    const tasks = await respTasks.json();
+    allTasksCache = Array.isArray(tasks) ? tasks : [];
+    const pendingTasks = allTasksCache.filter(t => t.status === 'pending');
+    document.getElementById('dashTasksVal').textContent = pendingTasks.length;
+    document.getElementById('sidebarTaskCount').textContent = pendingTasks.length;
+    renderDashboardCommitments(allTasksCache.slice(0, 6));
+
+    // Total memories count
+    let totalMemories = 0;
+    allContactsCache.forEach(c => totalMemories += (c.memory_count || 0));
+    document.getElementById('dashMemoriesVal').textContent = totalMemories;
+
+    // Meetings count
+    const respMeetings = await fetch(API + '/api/meetings');
+    const meetings = await respMeetings.json();
+    const meetingsList = Array.isArray(meetings) ? meetings : [];
+    document.getElementById('dashMeetingsVal').textContent = meetingsList.length;
+
+  } catch (err) {
+    console.error('Dashboard load error:', err);
+  }
+}
+
+function renderQuickContacts(contacts) {
+  const container = document.getElementById('quickContactsList');
+  if (!contacts.length) {
+    container.innerHTML = '<p style="color:var(--text-muted);font-size:0.8rem;padding:8px 0;">No contacts yet.</p>';
+    return;
+  }
+  container.innerHTML = contacts.map(c => {
+    const initials = (c.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    return `
+      <div class="contact-item-row">
+        <div class="contact-avatar-sm">${escHtml(initials)}</div>
+        <div class="contact-meta-col">
+          <div class="contact-row-name" onclick="openContactDetail(${c.id})">${escHtml(c.name)}</div>
+          <div class="contact-row-sub">${escHtml(c.role || c.company || 'Contact')}</div>
+        </div>
+        <button class="contact-action-btn" title="View Brief" onclick="openContactDetail(${c.id})">
+          <svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderDashboardCommitments(commitments) {
+  const tbody = document.getElementById('dashCommitmentTableBody');
+  if (!commitments.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:24px;">No commitments recorded yet. Ingest a meeting to track promises.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = commitments.map(c => `
+    <tr>
+      <td><strong>${escHtml(c.description)}</strong></td>
+      <td>${escHtml(c.contact_name || c.owner || 'Mutual')}</td>
+      <td>${escHtml(c.deadline_text || '—')}</td>
+      <td><span class="badge badge-${c.status === 'done' ? 'done' : c.status === 'cancelled' ? 'cancelled' : 'new'}">${escHtml(c.status)}</span></td>
+      <td>
+        ${c.status === 'pending' ? `
+          <button class="btn btn-sm btn-outline" onclick="updateCommitmentStatus(${c.id}, 'done')">Mark Done</button>
+        ` : `<span style="font-size:0.75rem;color:var(--text-muted);">Completed</span>`}
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openContactDetail(id) {
+  showSection('contacts');
+  selectContact(id);
+}
+
+// ---- Global Search Filter ----
+function handleGlobalSearch(query) {
+  const q = query.trim().toLowerCase();
+  if (!q) return;
+  // If user hits enter or types, can search across contacts
+  const matches = allContactsCache.filter(c => 
+    c.name.toLowerCase().includes(q) || 
+    (c.company && c.company.toLowerCase().includes(q)) ||
+    (c.role && c.role.toLowerCase().includes(q))
+  );
+  if (matches.length > 0 && document.getElementById('section-contacts').classList.contains('active')) {
+    renderContactListCustom(matches);
+  }
+}
+
+// ---- Process Meeting ----
+async function processMeeting(e) {
+  e.preventDefault();
+  const btn = document.getElementById('processBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner spinner-dark"></span> Processing Meeting & Storing Memory...';
+
+  const form = new FormData();
+  form.append('title', document.getElementById('meetTitle').value);
+  form.append('date', document.getElementById('meetDate').value);
+  form.append('team', document.getElementById('meetTeam').value);
+  form.append('transcript', document.getElementById('meetTranscript').value);
+  
+  const audioFile = document.getElementById('meetAudio').files[0];
+  if (audioFile) form.append('audio', audioFile);
+
+  try {
+    const resp = await fetch(API + '/api/process', { method: 'POST', body: form });
+    const data = await resp.json();
+
+    if (data.error) {
+      toast('<svg class="icon icon-sm" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line></svg> ' + data.error, 5000);
+      return;
+    }
+
+    lastProcessedMeetingId = data.meeting_id;
+    lastExtraction = data.extraction;
+
+    document.getElementById('processResults').style.display = 'block';
+    
+    // Summary
+    let summaryHtml = `
+      <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-md); padding:16px; margin-bottom:12px;">
+        <h4 style="font-size:0.9rem; font-weight:700; margin-bottom:6px; color:var(--text);">Meeting Executive Summary</h4>
+        <p style="font-size:0.86rem; color:var(--text-secondary); line-height:1.5;">${escHtml(data.summary)}</p>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px; font-size:0.8rem; color:var(--text-muted); flex-wrap:wrap;">
+        <span>Meeting #${data.meeting_id}</span>
+        <span>•</span>
+        <span>${data.task_count} tasks (${data.silent_task_count} unassigned)</span>
+        <span>•</span>
+        <span>${data.decision_count} decisions</span>
+        <span>•</span>
+        ${data.memory_synced ? '<span class="badge badge-success">Hindsight Memory Synced</span>' : '<span class="badge badge-warning">Local Memory Only</span>'}
+      </div>
+    `;
+    document.getElementById('resultSummary').innerHTML = summaryHtml;
+
+    // Participants
+    renderParticipants(data.participants || []);
+    
+    // Extracted Tasks
+    renderExtractedTasks(data.extraction.tasks || []);
+    document.getElementById('taskCount').textContent = (data.extraction.tasks || []).length;
+    
+    // Decisions
+    renderList('extractedDecisions', data.extraction.decisions || [], d => `
+      <div style="padding:10px; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); background:#ffffff;">
+        <strong style="font-size:0.85rem;">${escHtml(d.text)}</strong>
+        ${d.quote ? `<div class="evidence-quote">"${escHtml(d.quote)}"</div>` : ''}
+      </div>
+    `);
+    
+    // Ideas
+    renderList('extractedIdeas', data.extraction.ideas || [], d => `
+      <div style="padding:8px 12px; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); font-size:0.84rem;">
+        ${escHtml(d.text)}
+      </div>
+    `);
+    
+    // Open Issues
+    renderList('extractedIssues', data.extraction.open_issues || [], d => `
+      <div style="padding:10px; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); background:#ffffff;">
+        <strong style="font-size:0.85rem; color:#b91c1c;">${escHtml(d.text)}</strong>
+        ${d.quote ? `<div class="evidence-quote">"${escHtml(d.quote)}"</div>` : ''}
+      </div>
+    `);
+    
+    // Important dates
+    renderList('extractedDates', data.extraction.important_dates || [], d => `
+      <div style="padding:8px 12px; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); font-size:0.84rem;">
+        <strong>${escHtml(d.title)}</strong>: ${escHtml(d.date_text)}${d.date ? ` (${d.date})` : ''}
+      </div>
+    `);
+
+    toast('Meeting processed & stored in memory!');
+    loadDashboard();
+  } catch (err) {
+    toast('Error: ' + err.message, 5000);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg> <span>Process Meeting & Retain</span>';
+  }
+}
+
+function renderParticipants(participants) {
+  const container = document.getElementById('participantList');
+  container.innerHTML = participants.map((p, i) => 
+    `<input type="text" class="form-control participant-input" value="${escAttr(p)}" style="width:auto;display:inline-block;height:34px;font-size:0.82rem;" data-index="${i}">`
+  ).join('') + `<button class="btn btn-sm btn-outline" onclick="addParticipant()">+ Add</button>`;
+}
+
+function addParticipant() {
+  const container = document.getElementById('participantList');
+  const addBtn = container.querySelector('button');
+  const input = document.createElement('input');
+  input.type = 'text';
+  input.className = 'form-control participant-input';
+  input.style = 'width:auto;display:inline-block;height:34px;font-size:0.82rem;';
+  input.placeholder = 'Name';
+  container.insertBefore(input, addBtn);
+}
+
+async function confirmParticipants() {
+  const inputs = document.querySelectorAll('.participant-input');
+  const participants = Array.from(inputs).map(i => i.value.trim()).filter(v => v);
+  
+  try {
+    await fetch(API + `/api/meetings/${lastProcessedMeetingId}/confirm-participants`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({participants})
+    });
+    toast('Participants confirmed!');
+  } catch (err) {
+    toast('Error: ' + err.message);
+  }
+}
+
+function renderExtractedTasks(tasks) {
+  const container = document.getElementById('extractedTasks');
+  if (!tasks.length) { container.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No tasks extracted.</p>'; return; }
+  container.innerHTML = tasks.map(t => {
+    const isSilent = !t.owner;
+    return `
+      <div style="padding:12px; border:1px solid var(--border); border-radius:var(--radius-md); background:#ffffff; ${isSilent ? 'border-left: 3px solid #ec4899;' : ''}">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+          <strong style="font-size:0.85rem;">${escHtml(t.description)}</strong>
+          <span class="badge badge-${t.status}">${t.status}</span>
+        </div>
+        <div style="font-size:0.78rem; color:var(--text-muted); margin-top:4px;">
+          ${isSilent ? '<span class="badge badge-silent">Silent (unassigned)</span>' : `Owner: <strong>${escHtml(t.owner)}</strong>`}
+          ${t.deadline_text ? ` • Deadline: ${escHtml(t.deadline_text)}` : ''}
+          • Confidence: ${(t.confidence * 100).toFixed(0)}%
+        </div>
+        ${t.quote ? `<div class="evidence-quote">"${escHtml(t.quote)}"</div>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+function renderList(containerId, items, renderFn) {
+  const c = document.getElementById(containerId);
+  if (!items.length) { c.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">None found.</p>'; return; }
+  c.innerHTML = items.map(item => `<div>${renderFn(item)}</div>`).join('');
+}
+
+// ---- Pre-Meeting Brief ----
+async function generateBrief() {
+  const name = document.getElementById('briefName').value.trim();
+  if (!name) { toast('Please enter a participant or stakeholder name'); return; }
+
+  document.getElementById('briefResults').style.display = 'none';
+  document.getElementById('briefBaseline').innerHTML = '<span class="spinner spinner-dark"></span> Generating baseline brief...';
+  document.getElementById('briefEnhanced').innerHTML = '<span class="spinner spinner-dark"></span> Querying Hindsight memory bank...';
+  document.getElementById('briefResults').style.display = 'block';
+
+  try {
+    const resp = await fetch(API + '/api/brief', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({user_name: name})
+    });
+    const data = await resp.json();
+
+    document.getElementById('briefBaseline').innerHTML = formatBrief(data.baseline.brief);
+    document.getElementById('briefEnhanced').innerHTML = formatBrief(data.enhanced.brief);
+
+    const citations = data.enhanced.reflect_citations || [];
+    if (citations.length > 0) {
+      document.getElementById('briefCitations').style.display = 'block';
+      document.getElementById('citationList').innerHTML = citations.map(c => {
+        const text = typeof c === 'string' ? c : (c.text || JSON.stringify(c));
+        return `<div class="evidence-quote" style="margin-bottom:6px;">${escHtml(text)}</div>`;
+      }).join('');
+    } else {
+      document.getElementById('briefCitations').style.display = 'none';
+    }
+  } catch (err) {
+    toast('Error: ' + err.message, 5000);
+  }
+}
+
+function formatBrief(text) {
+  if (!text) return '<em>No memory data available yet. Ingest notes with this participant to build intelligence.</em>';
+  return escHtml(text)
+    .replace(/\n/g, '<br>')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/- /g, '• ');
+}
+
+// ---- Commitments Management ----
+async function loadTasks(status) {
+  const url = status ? `/api/tasks?status=${status}` : '/api/tasks';
+  try {
+    const resp = await fetch(API + url);
+    const tasks = await resp.json();
+    const container = document.getElementById('taskList');
+    if (!tasks.length) { container.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No tasks found.</p>'; return; }
+    container.innerHTML = tasks.map(t => `
+      <div style="padding:14px; border:1px solid var(--border); border-radius:var(--radius-md); background:#ffffff; ${!t.owner ? 'border-left: 3px solid #ec4899;' : ''}">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <strong style="font-size:0.88rem;">${escHtml(t.description)}</strong>
+          <div style="display:flex; gap:6px; align-items:center;">
+            <span class="badge badge-${t.status}">${t.status}</span>
+            <select onchange="updateTaskStatus('${escAttr(t.key)}', this.value)" class="form-control" style="width:auto; padding:2px 8px; height:28px; font-size:0.75rem;">
+              <option value="">Update...</option>
+              <option value="new">New</option>
+              <option value="in_progress">In Progress</option>
+              <option value="done">Done</option>
+              <option value="blocked">Blocked</option>
+            </select>
+          </div>
+        </div>
+        <div style="font-size:0.78rem; color:var(--text-muted); margin-top:6px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          ${!t.owner ? '<span class="badge badge-silent">Silent</span>' : `Owner: <strong>${escHtml(t.owner)}</strong>`}
+          ${t.deadline_text ? ` • Deadline: ${escHtml(t.deadline_text)}` : ''}
+          • Key: <code>${escHtml(t.key)}</code>
+          <button class="btn btn-sm btn-outline" onclick="showTaskHistory('${escAttr(t.key)}')" style="padding:2px 6px; font-size:0.72rem;">History</button>
+        </div>
+      </div>
+    `).join('');
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+async function loadSilentTasks() {
+  try {
+    const resp = await fetch(API + '/api/tasks/silent');
+    const tasks = await resp.json();
+    const container = document.getElementById('silentTaskList');
+    if (!tasks.length) { container.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No silent tasks — all promises have owners assigned.</p>'; return; }
+    container.innerHTML = tasks.map(t => `
+      <div style="padding:12px; border:1px solid var(--border); border-left:3px solid #ec4899; border-radius:var(--radius-md); background:#ffffff;">
+        <strong style="font-size:0.85rem;">${escHtml(t.description)}</strong>
+        <div style="font-size:0.78rem; color:var(--text-muted); margin-top:4px;">
+          Key: <code>${escHtml(t.key)}</code> ${t.deadline_text ? ` • Deadline: ${escHtml(t.deadline_text)}` : ''}
+        </div>
+        ${t.quote ? `<div class="evidence-quote">"${escHtml(t.quote)}"</div>` : ''}
+      </div>
+    `).join('');
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+async function updateTaskStatus(key, status) {
+  if (!status) return;
+  try {
+    await fetch(API + `/api/tasks/${key}/status`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({status})
+    });
+    toast('Task status updated');
+    loadTasks();
+    loadDashboard();
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+async function showTaskHistory(key) {
+  try {
+    const resp = await fetch(API + `/api/tasks/${key}/history`);
+    const history = await resp.json();
+    if (!history.length) { toast('No audit history for this task'); return; }
+    const msg = history.map(h => `${h.field_changed}: "${h.old_value}" → "${h.new_value}" (${h.changed_at})`).join('\n');
+    alert(`Task History: ${key}\n\n${msg}`);
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+// ---- Analytics & Follow-Through ----
+async function loadAnalytics() {
+  try {
+    const resp = await fetch(API + '/api/follow-through');
+    const data = await resp.json();
+    const container = document.getElementById('followThrough');
+    if (!data.length) { container.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No analytics data recorded yet.</p>'; return; }
+    container.innerHTML = `
+      <div class="table-responsive">
+        <table class="saas-table">
+          <thead>
+            <tr>
+              <th>Person</th>
+              <th>Completion Rate</th>
+              <th>On-Time Rate</th>
+              <th>Done / Total</th>
+              <th>Postponements</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${data.map(d => `
+              <tr>
+                <td><strong>${escHtml(d.owner)}</strong></td>
+                <td>
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <div class="progress-bar-bg">
+                      <div class="progress-bar-fill" style="width:${d.completion_pct}%; background:${d.completion_pct >= 70 ? '#059669' : d.completion_pct >= 40 ? '#d97706' : '#dc2626'};"></div>
+                    </div>
+                    <span>${d.completion_pct.toFixed(0)}%</span>
+                  </div>
+                </td>
+                <td>${d.on_time_pct.toFixed(0)}%</td>
+                <td>${d.done_tasks}/${d.total_tasks}</td>
+                <td>${d.deadline_postponements > 0 ? `<span class="badge badge-warning">${d.deadline_postponements}</span>` : '0'}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  } catch (err) {
+    document.getElementById('followThrough').innerHTML = 'Error: ' + err.message;
+  }
+
+  // Promise drift
+  try {
+    const resp = await fetch(API + '/api/promise-drift');
+    const data = await resp.json();
+    const c = document.getElementById('promiseDrift');
+    if (!data.length) { c.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No deadline drift detected.</p>'; return; }
+    c.innerHTML = data.map(d => `
+      <div style="padding:10px; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); margin-bottom:8px;">
+        <div style="display:flex; justify-content:space-between;">
+          <strong style="font-size:0.85rem;">${escHtml(d.description)}</strong>
+          <span class="badge badge-warning">Postponed ${d.change_count}×</span>
+        </div>
+        <div class="evidence-quote">${d.history.map(h => `${h.old_value} → ${h.new_value}`).join(' → ')}</div>
+      </div>
+    `).join('');
+  } catch (err) {}
+
+  // Stuck topics
+  try {
+    const resp = await fetch(API + '/api/stuck-topics');
+    const data = await resp.json();
+    const c = document.getElementById('stuckTopics');
+    if (!data.length) { c.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No unresolved recurring topics (requires 3+ meetings).</p>'; return; }
+    c.innerHTML = data.map(d => `
+      <div style="padding:10px; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); margin-bottom:8px;">
+        <strong style="font-size:0.85rem;">${escHtml(d.text)}</strong> — raised across ${d.count} meetings
+      </div>
+    `).join('');
+  } catch (err) {}
+
+  // Mental models
+  try {
+    const resp = await fetch(API + '/api/mental-models');
+    const data = await resp.json();
+    document.getElementById('mentalModelSlip').innerHTML = data['task-slip-patterns'] ? escHtml(data['task-slip-patterns']) : '<em>No slip patterns established yet.</em>';
+    document.getElementById('mentalModelReverse').innerHTML = data['decision-reversal-tracker'] ? escHtml(data['decision-reversal-tracker']) : '<em>No decision reversals detected.</em>';
+  } catch (err) {}
+}
+
+// ---- Meeting History ----
+async function loadMeetings() {
+  try {
+    const resp = await fetch(API + '/api/meetings');
+    const meetings = await resp.json();
+    const c = document.getElementById('meetingList');
+    if (!meetings.length) { c.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No meetings processed yet.</p>'; return; }
+    c.innerHTML = `
+      <div class="table-responsive">
+        <table class="saas-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Meeting Title</th>
+              <th>Date</th>
+              <th>Team</th>
+              <th>Memory Synced</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${meetings.map(m => `
+              <tr>
+                <td>${m.id}</td>
+                <td><strong>${escHtml(m.title)}</strong></td>
+                <td>${m.date}</td>
+                <td>${escHtml(m.team || '—')}</td>
+                <td>${m.memory_synced ? '<span class="badge badge-success">Synced</span>' : '<span class="badge badge-warning">Local</span>'}</td>
+                <td><button class="btn btn-sm btn-outline" onclick="viewMeeting(${m.id})">Details</button></td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+async function viewMeeting(id) {
+  try {
+    const resp = await fetch(API + `/api/meetings/${id}`);
+    const m = await resp.json();
+    document.getElementById('meetingDetail').style.display = 'block';
+    document.getElementById('detailTitle').textContent = m.title + ' (' + m.date + ')';
+    
+    let html = '';
+    if (m.summary) html += `<div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-md); padding:14px; margin-bottom:12px; font-size:0.86rem;">${escHtml(m.summary)}</div>`;
+    if (m.participants_list) html += `<p style="font-size:0.85rem; margin-bottom:12px;"><strong>Participants:</strong> ${m.participants_list.join(', ')}</p>`;
+    
+    const ext = m.extraction || {};
+    if (ext.tasks && ext.tasks.length) {
+      html += '<h4 style="font-size:0.88rem; font-weight:700; margin-bottom:8px;">Tasks Extracted:</h4>';
+      ext.tasks.forEach(t => {
+        html += `<div style="padding:10px; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); margin-bottom:6px; font-size:0.84rem;">
+          <strong>${escHtml(t.description)}</strong> — <span class="badge badge-${t.status}">${t.status}</span>
+          <div style="font-size:0.75rem; color:var(--text-muted);">${t.owner ? 'Owner: ' + escHtml(t.owner) : 'Unassigned'}</div>
+        </div>`;
+      });
+    }
+    
+    document.getElementById('detailContent').innerHTML = html;
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+// ---- Calendar ----
+async function loadMeetingsForCalendar() {
+  try {
+    const resp = await fetch(API + '/api/meetings');
+    const meetings = await resp.json();
+    const select = document.getElementById('calendarMeetingSelect');
+    select.innerHTML = '<option value="">Select a meeting...</option>';
+    meetings.forEach(m => {
+      select.innerHTML += `<option value="${m.id}">${escHtml(m.title)} (${m.date})</option>`;
+    });
+  } catch (err) {}
+}
+
+async function loadProposedEvents() {
+  const meetingId = document.getElementById('calendarMeetingSelect').value;
+  if (!meetingId) return;
+  try {
+    const resp = await fetch(API + '/api/calendar/propose', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({meeting_id: parseInt(meetingId)})
+    });
+    proposedEventsData = await resp.json();
+    const c = document.getElementById('proposedEvents');
+    if (!proposedEventsData.length) {
+      c.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No calendar-schedulable events found in this meeting.</p>';
+      document.getElementById('downloadIcsBtn').style.display = 'none';
+      return;
+    }
+    c.innerHTML = proposedEventsData.map((e, i) => `
+      <div style="display:flex; align-items:center; gap:12px; padding:10px; border:1px solid var(--border); border-radius:var(--radius-md); background:#ffffff;">
+        <input type="checkbox" id="event-${i}" checked>
+        <div>
+          <strong style="font-size:0.85rem;">${escHtml(e.title)}</strong>
+          <div style="font-size:0.78rem; color:var(--text-muted);">${e.date} (${escHtml(e.date_text)})</div>
+        </div>
+      </div>
+    `).join('');
+    document.getElementById('downloadIcsBtn').style.display = 'inline-flex';
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+async function downloadIcs() {
+  const events = proposedEventsData.filter((_, i) => document.getElementById(`event-${i}`).checked);
+  if (!events.length) { toast('Select at least one event'); return; }
+  try {
+    const resp = await fetch(API + '/api/calendar/download', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({events})
+    });
+    const blob = await resp.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = 'meeting_events.ics'; a.click();
+    URL.revokeObjectURL(url);
+    toast('ICS Calendar file downloaded!');
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+// ---- Corrections ----
+async function submitCorrection() {
+  try {
+    await fetch(API + '/api/corrections', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        meeting_id: parseInt(document.getElementById('corrMeeting').value) || null,
+        task_key: document.getElementById('corrTaskKey').value,
+        field: document.getElementById('corrField').value,
+        original_value: document.getElementById('corrOriginal').value,
+        corrected_value: document.getElementById('corrCorrected').value,
+        correction_type: 'task'
+      })
+    });
+    toast('Correction saved! Future extractions will learn from this adjustment.');
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+// ============================================================
+// CONTACTS & RELATIONSHIP INTELLIGENCE
+// ============================================================
+
+async function loadContacts() {
+  try {
+    const resp = await fetch(API + '/api/contacts');
+    const contacts = await resp.json();
+    allContactsCache = Array.isArray(contacts) ? contacts : [];
+    renderContactListCustom(allContactsCache);
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+function renderContactListCustom(contacts) {
+  const c = document.getElementById('contactList');
+  if (!contacts.length) {
+    c.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No contacts yet. Create one to get started.</p>';
+    return;
+  }
+  c.innerHTML = contacts.map(contact => {
+    const isSelected = currentContactId === contact.id;
+    return `
+      <div style="padding:12px; border:1px solid ${isSelected ? 'var(--primary)' : 'var(--border)'}; background:${isSelected ? 'var(--primary-subtle)' : '#ffffff'}; border-radius:var(--radius-md); cursor:pointer; transition:all 0.15s;" onclick="selectContact(${contact.id})">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <strong style="font-size:0.88rem; color:${isSelected ? 'var(--primary)' : 'var(--text)'};">${escHtml(contact.name)}</strong>
+          <div style="display:flex; gap:4px;">
+            ${contact.memory_count > 0 ? `<span class="badge badge-success">${contact.memory_count} memories</span>` : ''}
+            ${contact.pending_commitments > 0 ? `<span class="badge badge-warning">${contact.pending_commitments} open</span>` : ''}
+          </div>
+        </div>
+        <div style="font-size:0.78rem; color:var(--text-muted); margin-top:4px;">
+          ${contact.company ? escHtml(contact.company) : ''}
+          ${contact.role ? ' • ' + escHtml(contact.role) : ''}
+          ${contact.meeting_count ? ` • ${contact.meeting_count} meeting(s)` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function showCreateContactModal() {
+  showSection('contacts');
+  const card = document.getElementById('createContactCard');
+  card.style.display = 'block';
+  card.scrollIntoView({behavior:'smooth'});
+  document.getElementById('newContactName').focus();
+}
+
+async function createContact() {
+  const name = document.getElementById('newContactName').value.trim();
+  if (!name) { toast('Name is required'); return; }
+  try {
+    const resp = await fetch(API + '/api/contacts', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        name,
+        company: document.getElementById('newContactCompany').value.trim(),
+        role: document.getElementById('newContactRole').value.trim(),
+        notes: document.getElementById('newContactNotes').value.trim(),
+      })
+    });
+    const contact = await resp.json();
+    if (contact.error) { toast('Error: ' + contact.error); return; }
+    document.getElementById('createContactCard').style.display = 'none';
+    document.getElementById('newContactName').value = '';
+    document.getElementById('newContactCompany').value = '';
+    document.getElementById('newContactRole').value = '';
+    document.getElementById('newContactNotes').value = '';
+    toast('Contact created successfully!');
+    await loadContacts();
+    await loadDashboard();
+    selectContact(contact.id);
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+async function selectContact(id) {
+  currentContactId = id;
+  renderContactListCustom(allContactsCache);
+  try {
+    const resp = await fetch(API + `/api/contacts/${id}`);
+    const contact = await resp.json();
+    document.getElementById('contactDetail').style.display = 'block';
+    document.getElementById('briefPanel').style.display = 'none';
+    document.getElementById('evolutionPanel').style.display = 'none';
+
+    // Set avatar initials
+    const initials = (contact.name || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    document.getElementById('contactDetailAvatar').textContent = initials;
+    document.getElementById('contactDetailName').textContent = contact.name;
+    
+    let meta = [];
+    if (contact.company) meta.push(contact.company);
+    if (contact.role) meta.push(contact.role);
+    if (contact.notes) meta.push(contact.notes);
+    const meetCount = (contact.meetings || []).length;
+    const memCount = (contact.memories || []).length;
+    meta.push(`${meetCount} meeting(s) • ${memCount} memories`);
+    document.getElementById('contactDetailMeta').textContent = meta.join(' | ');
+
+    renderContactCommitments(contact.commitments || []);
+    renderContactMemories(contact.memories || []);
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+function switchContactTab(tabName, pill) {
+  ['notes', 'memories', 'query', 'commitments'].forEach(t => {
+    const el = document.getElementById('contactTab-' + t);
+    if (el) el.style.display = (t === tabName) ? 'block' : 'none';
+  });
+  if (pill && pill.parentElement) {
+    pill.parentElement.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+  }
+}
+
+function renderContactCommitments(commitments) {
+  const c = document.getElementById('contactCommitments');
+  if (!commitments.length) { c.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No commitments recorded yet.</p>'; return; }
+  c.innerHTML = commitments.map(cm => `
+    <div style="padding:12px; border:1px solid var(--border); border-radius:var(--radius-md); background:#ffffff;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:4px;">
+        <strong style="font-size:0.85rem;">${escHtml(cm.description)}</strong>
+        <span class="badge badge-${cm.status === 'done' ? 'done' : cm.status === 'cancelled' ? 'cancelled' : 'new'}">${cm.status}</span>
+      </div>
+      <div style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">
+        Owner: ${escHtml(cm.owner || 'Mutual')}
+        ${cm.deadline_text ? ' • Deadline: ' + escHtml(cm.deadline_text) : ''}
+      </div>
+      ${cm.status === 'pending' ? `
+        <div style="margin-top:8px; display:flex; gap:6px;">
+          <button class="btn btn-sm btn-success" onclick="updateCommitmentStatus(${cm.id},'done')">Mark Done</button>
+          <button class="btn btn-sm btn-outline" onclick="updateCommitmentStatus(${cm.id},'cancelled')">Cancel</button>
+        </div>` : ''}
+    </div>
+  `).join('');
+}
+
+function renderContactMemories(memories) {
+  const c = document.getElementById('contactMemories');
+  if (!memories.length) { c.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;">No memories yet. Add notes from a meeting with this contact to build memory.</p>'; return; }
+  c.innerHTML = memories.map(m => `
+    <div style="padding:12px; border:1px solid var(--border-subtle); border-radius:var(--radius-md); background:#ffffff;">
+      <div style="display:flex; gap:6px; align-items:center;">
+        <span class="badge badge-primary" style="font-size:0.7rem; text-transform:uppercase;">${m.memory_type}</span>
+      </div>
+      <div style="margin-top:6px; font-size:0.85rem; color:var(--text); line-height:1.45;">${escHtml(m.content)}</div>
+      ${m.context ? `<div class="evidence-quote">${escHtml(m.context)}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+async function filterContactMemories(type, btn) {
+  if (!currentContactId) return;
+  if (btn && btn.parentElement) {
+    btn.parentElement.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  try {
+    const url = type ? `/api/contacts/${currentContactId}/memories?type=${type}` : `/api/contacts/${currentContactId}/memories`;
+    const resp = await fetch(API + url);
+    const memories = await resp.json();
+    renderContactMemories(memories);
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+async function addContactNotes() {
+  if (!currentContactId) return;
+  const notes = document.getElementById('contactMeetNotes').value.trim();
+  const title = document.getElementById('contactMeetTitle').value.trim() || 'Meeting Notes';
+  const date = document.getElementById('contactMeetDate').value;
+  if (!notes) { toast('Please add meeting notes'); return; }
+
+  const btn = document.getElementById('addNotesBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner spinner-dark"></span> Extracting & retaining in memory...';
+
+  try {
+    const resp = await fetch(API + `/api/contacts/${currentContactId}/add-notes`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({notes, title, date})
+    });
+    const data = await resp.json();
+    if (data.error) { toast('Error: ' + data.error); return; }
+
+    const resultDiv = document.getElementById('addNotesResult');
+    resultDiv.style.display = 'block';
+    const hs = data.hindsight_memories_stored;
+    resultDiv.innerHTML = `
+      <div class="intelligence-box" style="margin-bottom:12px;">
+        <div class="intelligence-box-title">Meeting Processed Successfully</div>
+        <p style="font-size:0.84rem; color:#14532d;">
+          Extracted <strong>${data.total_extracted_items}</strong> relationship intelligence items.
+          <br>Stored <strong>${data.local_memories_stored}</strong> memories in local state.
+          ${hs > 0 ? `<br>Retained <strong>${hs}</strong> memory units in Hindsight Cloud bank.` : '<br>Hindsight memory bank not reachable — stored locally.'}
+        </p>
+      </div>
+      ${renderExtractionPreview(data.extracted)}
+    `;
+
+    document.getElementById('contactMeetNotes').value = '';
+    toast('Memories stored successfully!');
+    loadContacts();
+    loadDashboard();
+    setTimeout(() => selectContact(currentContactId), 500);
+  } catch (err) {
+    toast('Error: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg class="icon icon-sm" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> <span>Process & Store in Memory</span>';
+  }
+}
+
+function renderExtractionPreview(extracted) {
+  if (!extracted) return '';
+  let html = '<div style="margin-top:8px; font-size:0.82rem;">';
+  const sections = [
+    ['concerns','Concerns'],['interests','Interests'],['preferences','Preferences'],
+    ['objections','Objections'],['decisions','Decisions'],['commitments','Commitments'],
+    ['changes','Changes'],['open_issues','Open Issues'],
+  ];
+  for (const [key, label] of sections) {
+    const items = extracted[key] || [];
+    if (!items.length) continue;
+    html += `<strong>${label}:</strong><ul style="margin:4px 0 8px 16px;">`;
+    for (const item of items) {
+      const text = typeof item === 'string' ? item : (item.content || item.description || JSON.stringify(item));
+      html += `<li>${escHtml(text)}</li>`;
+    }
+    html += '</ul>';
+  }
+  html += '</div>';
+  return html;
+}
+
+async function generateContactBrief() {
+  if (!currentContactId) return;
+  const objective = document.getElementById('briefObjective').value.trim();
+
+  const briefPanel = document.getElementById('briefPanel');
+  briefPanel.style.display = 'block';
+  briefPanel.scrollIntoView({behavior:'smooth'});
+  document.getElementById('briefPanelContent').innerHTML = '<span class="spinner spinner-dark"></span> Generating executive brief using Hindsight memory...';
+  document.getElementById('briefPanelCitations').style.display = 'none';
+
+  const nameEl = document.getElementById('contactDetailName');
+  document.getElementById('briefPanelTitle').textContent = `Pre-Meeting Brief: ${nameEl.textContent}`;
+
+  try {
+    const resp = await fetch(API + `/api/contacts/${currentContactId}/brief`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({objective})
+    });
+    const data = await resp.json();
+    if (data.error) { document.getElementById('briefPanelContent').textContent = 'Error: ' + data.error; return; }
+
+    document.getElementById('briefPanelContent').innerHTML = formatBrief(data.brief);
+
+    const stats = [];
+    if (data.memory_count > 0) stats.push(`${data.memory_count} Hindsight memories queried`);
+    if (data.local_memory_count > 0) stats.push(`${data.local_memory_count} local memories`);
+    if (data.open_commitments_count > 0) stats.push(`${data.open_commitments_count} open commitments`);
+    if (data.meeting_count > 0) stats.push(`${data.meeting_count} meetings evaluated`);
+    document.getElementById('briefPanelStats').textContent = stats.join(' • ');
+
+    const citations = data.citations || [];
+    if (citations.length > 0) {
+      document.getElementById('briefPanelCitations').style.display = 'block';
+      document.getElementById('briefCitationList').innerHTML = citations.map(c => {
+        const text = typeof c === 'string' ? c : (c.text || JSON.stringify(c));
+        return `<div class="evidence-quote">${escHtml(text)}</div>`;
+      }).join('');
+    }
+  } catch (err) {
+    document.getElementById('briefPanelContent').textContent = 'Error: ' + err.message;
+  }
+}
+
+async function showContactEvolution() {
+  if (!currentContactId) return;
+  const evolutionPanel = document.getElementById('evolutionPanel');
+  evolutionPanel.style.display = 'block';
+  evolutionPanel.scrollIntoView({behavior:'smooth'});
+  document.getElementById('evolutionContent').innerHTML = '<span class="spinner spinner-dark"></span> Analyzing relationship evolution trajectory...';
+
+  const nameEl = document.getElementById('contactDetailName');
+  document.getElementById('evolutionPanelTitle').textContent = `Relationship Evolution: ${nameEl.textContent}`;
+
+  try {
+    const resp = await fetch(API + `/api/contacts/${currentContactId}/evolution`);
+    const data = await resp.json();
+    if (data.error) { document.getElementById('evolutionContent').textContent = 'Error: ' + data.error; return; }
+    document.getElementById('evolutionContent').innerHTML = formatBrief(data.evolution);
+  } catch (err) {
+    document.getElementById('evolutionContent').textContent = 'Error: ' + err.message;
+  }
+}
+
+function setMemoryQuery(q) {
+  document.getElementById('memoryQueryInput').value = q;
+}
+
+async function runMemoryQuery() {
+  if (!currentContactId) return;
+  const query = document.getElementById('memoryQueryInput').value.trim();
+  if (!query) { toast('Please enter a query'); return; }
+
+  const resultDiv = document.getElementById('memoryQueryResult');
+  resultDiv.style.display = 'block';
+  resultDiv.innerHTML = '<span class="spinner spinner-dark"></span> Querying Hindsight memory...';
+
+  try {
+    const resp = await fetch(API + `/api/contacts/${currentContactId}/remember`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({query})
+    });
+    const data = await resp.json();
+    if (data.error) { resultDiv.innerHTML = 'Error: ' + escHtml(data.error); return; }
+
+    const stats = data.memory_count > 0 ? `<div style="font-size:0.75rem; color:var(--text-muted); margin-top:6px;">Used ${data.memory_count} Hindsight memories + ${data.local_memory_count} local records</div>` : '';
+    resultDiv.innerHTML = `
+      <div style="background:#f8fafc; border:1px solid var(--border); border-radius:var(--radius-md); padding:14px; font-size:0.86rem; line-height:1.5;">${formatBrief(data.answer)}</div>
+      ${stats}
+    `;
+  } catch (err) {
+    resultDiv.innerHTML = 'Error: ' + escHtml(err.message);
+  }
+}
+
+async function updateCommitmentStatus(id, status) {
+  try {
+    await fetch(API + `/api/commitments/${id}/status`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({status})
+    });
+    toast('Commitment updated');
+    if (currentContactId) selectContact(currentContactId);
+    loadDashboard();
+  } catch (err) { toast('Error: ' + err.message); }
+}
+
+function escHtml(s) { if (!s) return ''; const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+function escAttr(s) { return (s || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+
+// Set dates on load
+document.getElementById('meetDate').valueAsDate = new Date();
+document.getElementById('contactMeetDate').valueAsDate = new Date();
+
+// Initial load
+loadDashboard();
+</script>
+</body>
+</html>

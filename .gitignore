@@ -1,0 +1,37 @@
+# Environment
+.env
+*.pyc
+__pycache__/
+*.pyo
+
+# Data
+data/*.db
+data/*.db-wal
+data/*.db-shm
+*.db
+*.db-wal
+*.db-shm
+
+# Uploads
+uploads/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+venv/
+.venv/
+dist/
+build/
+*.egg-info/
+
+# Eval outputs
+eval/results/
+*.png
